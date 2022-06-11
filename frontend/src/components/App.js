@@ -49,7 +49,7 @@ function App() {
   function handleEditProfileClick() {
     setIsEditProfilePopupOpen(true)
   }
-  
+
   function handleAddPlaceClick() {
     setIsAddPlacePopupOpen(true)
   }
@@ -68,7 +68,7 @@ function App() {
   }
 
   function handleUpdateUser({name, about}) {
-    
+
     api.editUserInfo(name, about).then(() => {
       const updatedUser = { ...currentUser, name, about }
 
@@ -88,13 +88,13 @@ function App() {
 
   React.useEffect(() => {
     if(loggedIn) {
-     api.getInitialCards().then(cardList => { 
-       setCards(cardList) 
+     api.getInitialCards().then(cardList => {
+       setCards(cardList)
      }).catch(error => api.errorHandler(error))
 
      api.getUserInfo().then(data => setCurrentUser(data))
         .catch(error => api.errorHandler(error))
-    
+
    }
    }, [loggedIn])
 
@@ -145,17 +145,17 @@ function App() {
     .then(() => {
         handleInfoTooltipContent({iconPath: registrationOk, text: 'Вы успешно зарегистрировались!'})
         handleInfoTooltipPopupOpen()
-        
+
         history.push("/sign-in")
     }).catch((err)=> {
       handleInfoTooltipContent({iconPath: registrationNoOK, text: 'Что-то пошло не так! Попробуйте ещё раз.'})
       handleInfoTooltipPopupOpen()
       console.log(err)
     })
-  }  
+  }
 
-  // Авторизация 
-  
+  // Авторизация
+
   function authorization(email, password) {
     auth.authorize(email, password )
     .then((data) => {
@@ -189,8 +189,8 @@ function App() {
             <Switch>
 
               {currentUser && <ProtectedRoute exact path="/" loggedIn={loggedIn} component={Main}
-                onEditProfile={handleEditProfileClick} 
-                onAddPlace={handleAddPlaceClick} 
+                onEditProfile={handleEditProfileClick}
+                onAddPlace={handleAddPlaceClick}
                 onEditAvatar={handleEditAvatarClick}
                 onCardClick={handleCardClick}
                 cards={cards}
@@ -199,13 +199,13 @@ function App() {
               />}
 
               <Route path="/sign-in">
-                <Login 
+                <Login
                   authorization={authorization}
                 />
               </Route>
 
               <Route path="/sign-up">
-                <Register 
+                <Register
                   registration={registration}
                 />
               </Route>
@@ -217,11 +217,11 @@ function App() {
             </Switch>
 
           {currentUser &&
-            <EditProfilePopup 
-              isOpen={isEditProfilePopupOpen} 
-              onClose={closeAllPopups} 
+            <EditProfilePopup
+              isOpen={isEditProfilePopupOpen}
+              onClose={closeAllPopups}
               onUpdateUser={handleUpdateUser}
-            /> 
+            />
           }
 
           <AddPlacePopup
@@ -231,22 +231,22 @@ function App() {
           />
 
           {currentUser &&
-            <EditAvatarPopup 
-              isOpen={isEditAvatarPopupOpen} 
+            <EditAvatarPopup
+              isOpen={isEditAvatarPopupOpen}
               onClose={closeAllPopups}
-              onUpdateAvatar={handleUpdateAvatar}   
-            /> 
+              onUpdateAvatar={handleUpdateAvatar}
+            />
           }
 
-          <ImagePopup 
-            card={selectedCard} 
+          <ImagePopup
+            card={selectedCard}
             onClose={closeAllPopups}
             isOpen={isImagePopupOpen}
           />
 
           <InfoTooltip
-            isOpen={isInfoTooltipPopupOpen} 
-            onClose={closeAllPopups} 
+            isOpen={isInfoTooltipPopupOpen}
+            onClose={closeAllPopups}
             message={message}
           />
         </div>
