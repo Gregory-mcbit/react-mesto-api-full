@@ -8,7 +8,7 @@
 
 **Как перейти на сайт?**
 
-* [Проект расположен по этой ссылке](https://billion.nomoredomains.xyz)
+* [Проект расположен по этой ссылке](https://billion.nomoredomains.xyz/sign-up)
 * [Поддомен бэкенда](https://api.nomoredomains.xyz)
 * Публичный IP - 51.250.93.50
 
