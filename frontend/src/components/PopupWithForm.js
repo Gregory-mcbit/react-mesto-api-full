@@ -1,42 +1,20 @@
-import React, { useEffect } from 'react'
-
-function PopupWithForm({name, title, children, isOpen, onClose, handleSubmit, submitButton}) {
-
-  React.useEffect(() => {
-
-    function hadleEscClose(evt) {
-      if (evt.key === "Escape") {
-        onClose()
-      }
-    }
-
-    function handleClickOver(evt) {
-      if (Array.from(evt.target.classList).includes('popup_opened')) onClose()
-    }
-
-    if (isOpen){
-      document.addEventListener('keydown', hadleEscClose)
-      document.addEventListener('click', handleClickOver)
-    }
-
-    return () => {
-      document.removeEventListener('keydown', hadleEscClose)
-      document.removeEventListener('click', handleClickOver)
-    }
-  }, [isOpen])
+function PopupWithForm({name, title, children, isOpen, onClose, handleSubmit, buttonText}) {
 
     return (
-        <div className={`popup popup_type_${name} ${isOpen ? 'popup_opened' : ''}`}>
-          <div className="popup__container">
-            <h4 className="popup__title">{title}</h4>
-            <form className="popup__form" name={name} onSubmit={handleSubmit}>
+        <div className={`pop-up pop-up_${name} ${isOpen ? 'pop-up_opened' : ''}`}>
+          <div className="pop-up__window">
+            <h3 className="pop-up__title">{title}</h3>
+            <form className="popup__form" name={name} noValidate onSubmit={handleSubmit}>
               {children}
-              <button type="submit" className="popup__button-save" value={submitButton} name="submit">{submitButton}</button>
+              <button
+            type="submit" 
+            className="pop-up__submit-button" 
+            name="submit" >{buttonText}</button>
             </form>
-            <button type="button" className="popup__button-close" onClick={onClose} />
+            <button type="button" className="pop-up__close-button" onClick={onClose} />
           </div>
         </div>
-    )
+    );
   }
   
-  export default PopupWithForm
+  export default PopupWithForm;

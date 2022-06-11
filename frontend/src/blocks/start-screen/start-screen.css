@@ -1,9 +1,0 @@
-.start-screen {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  padding-top: 55px;
-  padding-bottom: calc(100vh - 605px);
-  margin: 0;
-}

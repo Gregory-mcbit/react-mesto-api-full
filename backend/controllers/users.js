@@ -1,23 +1,22 @@
-/* eslint-disable no-underscore-dangle */
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
+const DataError = require('../errors/data_error'); // 400
+const AuthError = require('../errors/auth_error'); // 401
+const ConflictError = require('../errors/conflict_error'); // 409
+const NotFoundError = require('../errors/not_found_error'); // 404
+
 const { NODE_ENV } = process.env;
 
 const { JWT_SECRET = 'secret' } = process.env;
-
-const DataError = require('../errors/data_error'); // 400
-const NotFoundError = require('../errors/not_found_error'); // 404
-const AuthError = require('../errors/auth_error'); // 401
-const ConflictError = require('../errors/conflict_error'); // 409
 
 const getUsers = (req, res, next) => User.find({})
   .then((users) => res.status(200).send(users))
   .catch(next);
 
 const getUser = (req, res, next) => User.findById(req.params._id)
-  .orFail(new NotFoundError('Нет пользователя с таким id.'))
+  .orFail(new NotFoundError('Юзер по заданному ID отсутствует в БД.'))
   .then((user) => res.status(200).send(user))
   .catch((err) => {
     if (err.name === 'CastError') {
@@ -55,7 +54,7 @@ const updateUser = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { name, about }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id.');
+        throw new NotFoundError('Юзер по заданному ID отсутствует в БД.');
       }
       return res.status(200).send(user);
     })
@@ -73,7 +72,7 @@ const updateAvatar = (req, res, next) => {
   User.findByIdAndUpdate(req.user._id, { avatar }, { new: true, runValidators: true })
     .then((user) => {
       if (!user) {
-        throw new NotFoundError('Нет пользователя с таким id.');
+        throw new NotFoundError('Юзер по заданному ID отсутствует в БД.');
       }
       return res.status(200).send(user);
     })
@@ -91,17 +90,21 @@ const login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret', { expiresIn: '7d' });
+      const token = jwt.sign(
+        { _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : 'secret', { expiresIn: '7d' },
+      );
       res.cookie('jwt', token, {
         httpOnly: true,
         sameSite: true,
+        // secure: true,
       }).send({ message: 'Записано.' });
+      // .end(res.send({ message: 'Записано.' }));
     })
     .catch(() => next(new AuthError('Неверный логин либо пароль')));
 };
 
 const getCurrentUser = (req, res, next) => User.findById(req.user._id)
-  .orFail(new NotFoundError('Нет пользователя с таким id.'))
+  .orFail(new NotFoundError('Юзер по заданному ID отсутствует в БД.'))
   .then((user) => {
     res.send({ data: user });
   })

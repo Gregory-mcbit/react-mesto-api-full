@@ -1,36 +1,37 @@
-export const BASE_URL = 'https://api.nomoredomains.xyz'
+export const BASE_URL = 'https://api.nomoredomains.xyz';
 
-const checkResponse = (res) => {
+const checkRequestResult = (res) => {
   if (res.ok) {
-    return res.json()
+    return res.json();
   }
-  return Promise.reject(`Ошибка: ${res.status}`)
+  return Promise.reject(`Error ${res.status}`);
 }
 
 export const register = (email, password) => {
-  return fetch(`${BASE_URL}/sign-up`, {
+  return fetch(`${BASE_URL}/signup`, {
     method: 'POST',
     credentials:"include",
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({email, password})
   })
-  .then(checkResponse)
-}
+  .then(checkRequestResult)
+};
 
 export const authorize = (email, password) => {
-  return fetch(`${BASE_URL}/sign-in`, {
+  return fetch(`${BASE_URL}/signin`, {
     method: 'POST',
     credentials:"include",
     headers: { 'Content-Type': 'application/json',
     },
     body: JSON.stringify({ email, password })
-  }).then(checkResponse)
+  })
+  .then(res => checkRequestResult(res))
   .then((data) => {
     if (data.token) {
-      localStorage.setItem('jwt', data.token)
-      return data.token
+      localStorage.setItem('jwt', data.token);
+      return data.token;
     }
   })
 }
@@ -43,6 +44,6 @@ export const getContent = (token) => {return fetch(`${BASE_URL}/users/me`, {
     'Authorization': `Bearer ${token}`,
   },
 })
-  .then(checkResponse)
+  .then(checkRequestResult)
   .then((data) => data)
 }

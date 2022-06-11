@@ -1,15 +1,15 @@
-import logo from '../images/logo.svg'
-import { Link, useLocation } from 'react-router-dom'
+import mesto_logo from '../images/mesto_logo.svg';
+import { Link, useLocation } from 'react-router-dom';
 
 function Header({loggedIn, email, handleSignOut}) {
-  const { pathname } = useLocation()
-  const text = `${pathname === '/sign-in' ? 'Регистрация' : 'Войти'}`
-  const linkRoute = `${pathname === '/sign-in' ? '/sign-up' : '/sign-in'}`
-  
-  return (
-    <header className="header">
-      <img src={logo} alt="Логотип Место" className="header__logo" />
-      <div className="header__wrap">
+    const { pathname } = useLocation();
+    const text = `${pathname === '/signin' ? 'Регистрация' : 'Войти'}`;
+    const linkRoute = `${pathname === '/signin' ? '/signup' : '/signin'}`;
+    return ( < header className = "header" >
+        <img src = { mesto_logo }
+        className = "header__logo"
+        alt = "Лого Место" / >
+             <div className="header__box">
         {loggedIn ? (
           <>
             <p className="header__email">{email}</p>
@@ -17,8 +17,10 @@ function Header({loggedIn, email, handleSignOut}) {
           </>) : (<Link to={linkRoute} className="header__link">{text}</Link>)
         }
       </div>
-    </header>
-  )
+        </header>
+        
+
+    );
 }
 
-export default Header
+export default Header;

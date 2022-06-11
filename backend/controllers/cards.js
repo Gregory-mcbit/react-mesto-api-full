@@ -1,19 +1,20 @@
-/* eslint-disable no-else-return */
-/* eslint-disable no-underscore-dangle */
 const Card = require('../models/card');
 
 const DataError = require('../errors/data_error'); // 400
 const AccessDeniedError = require('../errors/access_denied_error'); // 403
 const NotFoundError = require('../errors/not_found_error'); // 404
 
+// получить все карточки
 const getCards = (req, res, next) => {
   Card.find({})
     .then((card) => {
+      // получили и сразу отправили юзеру
       res.send(card);
     })
     .catch(next);
 };
 
+// через post добавили в бд
 const createCard = (req, res, next) => {
   const { name, link } = req.body;
   Card.create({ name, link, owner: req.user._id })
@@ -22,7 +23,7 @@ const createCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new DataError('Данные карточки не валидны.'));
+        next(DataError('Данные карточки не валидны.'));
       } else {
         next(err);
       }
@@ -35,7 +36,7 @@ const deleteCard = (req, res, next) => {
     .orFail(() => new NotFoundError('Карточка не найдена'))
     .then((card) => {
       if (JSON.stringify(req.user._id) === JSON.stringify(card.owner)) {
-        return Card.findByIdAndRemove(_id)
+        Card.findByIdAndRemove(_id)
           .then((result) => {
             res.send(result);
           });
@@ -48,6 +49,7 @@ const deleteCard = (req, res, next) => {
 
 const likeCard = (req, res, next) => {
   Card.findByIdAndUpdate(req.params._id, {
+    // добавляем id юзера в качестве лайка
     $addToSet: { likes: req.user._id },
   }, { new: true })
     .orFail(() => new NotFoundError('Карточка не найдена'))
@@ -56,7 +58,7 @@ const likeCard = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'CastError') {
-        next(new DataError('Данные карточки невалидны.'));
+        next(new DataError('Данные карточки не валидны.'));
       } else {
         next(err);
       }
@@ -67,6 +69,7 @@ const dislikeCard = (req, res, next) => {
   Card.findByIdAndUpdate(
     req.params._id,
     {
+      // убираем id из массива лайков
       $pull: { likes: req.user._id },
     },
     { new: true },
@@ -76,10 +79,8 @@ const dislikeCard = (req, res, next) => {
       res.send(card);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        next(new DataError('Передаваемые данныые невалидны.'));
-      } else if (err.message === 'NotFound') {
-        next(new NotFoundError('Передаваемые данныые невалидны.'));
+      if (err.message === 'CastError') {
+        next(new DataError('Пенредаваемые данныые не валидны.'));
       } else {
         next(err);
       }

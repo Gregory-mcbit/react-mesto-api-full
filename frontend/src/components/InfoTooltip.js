@@ -1,14 +1,13 @@
-function InfoTooltip ({onClose, isOpen, message}) {
-
-    return (
-      <div className={`popup popup_type_infotool ${isOpen ? 'popup_opened' : ''}`}>
-        <div className="popup__container">
-          <img src={message.iconPath} alt="" className="popup__result-icon" />
-          <p className="popup__title-info">{message.text}</p>
-          <button type="button" className="popup__button-close" onClick={onClose} />
-        </div>
+function InfoToolTip ({isOpen, onClose, message}) {
+  return(
+  <div className={`pop-up pop-up_info-tool ${isOpen ? 'pop-up_opened' : ''}`}>
+      <div className="pop-up__window">
+        <img src={message.iconPath} alt="Пикча результата регистрации" className="pop-up__reg-pic" />
+        <h3 className="pop-up__reg-text">{message.text}</h3>
+        <button type="button" className="pop-up__close-button" onClick={onClose} />
       </div>
-    )
-  }
-  
-  export default InfoTooltip
+    </div>
+  )
+}
+
+export default InfoToolTip;

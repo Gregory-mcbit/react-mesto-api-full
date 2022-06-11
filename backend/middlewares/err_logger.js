@@ -5,7 +5,7 @@ const dirname = 'logs';
 const format = winston.format.json();
 
 const requestLogger = expressWinston.logger({
-
+  // сейвим все запросы к api
   transports: [
     new winston.transports.File({ dirname, filename: 'request.log' }),
   ],
@@ -13,7 +13,7 @@ const requestLogger = expressWinston.logger({
 });
 
 const errorLogger = expressWinston.errorLogger({
-
+  // сейвим  возвращаемые логи
   transports: [
     new winston.transports.File({ dirname, filename: 'error.log' }),
   ],

@@ -1,36 +1,43 @@
-import PopupWithForm from './PopupWithForm'
-import React from 'react'
+import PopupWithForm from './PopupWithForm';
+import React from 'react';
 
-function EditAvatarPopup({isOpen, onClose, onUpdateAvatar}) {
-  const avatarInput = React.useRef()
-
-  React.useEffect(() => {
-    if (isOpen) {
-      avatarInput.current.value = ''
-    }
-  }, [isOpen])
+function EditAvatarPopup({isOpen, onClose, onUpdateAvatar,buttonText}) {
+  const avatarInput = React.useRef();
 
   function handleSubmit(e) {
-    e.preventDefault()
-
+    e.preventDefault();
+  
     onUpdateAvatar({
       avatar: avatarInput.current.value
-    })
-  }
+    });
+  } 
+
 
   return (
     <PopupWithForm 
-        name="avatar"
         title="Обновить аватар"
+        name="avatar"
         children=""
+        handleSubmit={handleSubmit}
         isOpen={isOpen}
         onClose={onClose}
-        submitButton={'Сохранить'}
-        handleSubmit={handleSubmit}>
-          <input type="url" placeholder="Ссылка на картинку" className="popup__input popup__input_name_link-avatar" name="avatar-input" id="avatar-input" required ref={avatarInput} />
-          <span className='popup__input-error' id='avatar-input-error'>Заполните это поле.</span>
-    </PopupWithForm>
-  )
+        buttonText={buttonText}
+        >
+        
+          <input 
+            ref={avatarInput}
+            type="url" 
+            placeholder="Ссылка на картинку" 
+            className="pop-up__input pop-up__input-avatar" 
+            name="link" 
+            id="link-input-avatar" 
+            required />
+          <span 
+            className='pop-up__form-error' 
+            id='link-input-avatar-error'></span>
+          
+        </PopupWithForm>
+  );
 }
 
-export default EditAvatarPopup
+export default EditAvatarPopup;
