@@ -28,9 +28,9 @@ mongoose.connect('mongodb://localhost:27017/mestodb', {
 
 const corsOptions = {
   origin: [
-    'https://oldmilky.nomoredomains.club',
-    'http://oldmilky.nomoredomains.club',
-    'https://178.154.229.194',
+    'https://billion.nomoredomains.xyz',
+    'http://billion.nomoredomains.xyz',
+    'https://51.250.93.50',
     'https://localhost:3000',
   ],
   credentials: true,
