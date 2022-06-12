@@ -3,6 +3,7 @@ class Api {
     constructor({ adress, headers }) {
             this._adress = adress;
             this._headers = headers;
+            console.log(this._headers, "TOKEN TOKEN")
         }
 
     getInitialCards() {
@@ -97,13 +98,10 @@ class Api {
 
 }
 
-const token = localStorage.getItem('jwt');
-
 const api = new Api({
     adress: 'https://api.nomoredomains.xyz',
     headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        authorization: localStorage.getItem('jwt'),
     },
 });
 export default api;
