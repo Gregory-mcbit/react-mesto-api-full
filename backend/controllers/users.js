@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
+require('dotenv').config();
 
 const DataError = require('../errors/data_error'); // 400
 const AuthError = require('../errors/auth_error'); // 401
@@ -9,7 +10,7 @@ const NotFoundError = require('../errors/not_found_error'); // 404
 
 const { NODE_ENV } = process.env;
 
-const { JWT_SECRET = 'secret' } = process.env;
+const { JWT_SECRET } = process.env;
 
 const getUsers = (req, res, next) => User.find({})
   .then((users) => res.status(200).send(users))
