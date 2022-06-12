@@ -31,12 +31,6 @@ function App() {
   const [isInfoTooltipPopupOpen, setIsInfoTooltipPopupOpen] = React.useState(false);
   const escapeHtml = require('escape-html')
 
-
-  React.useEffect(() => {
-    api.getUserInfo().then(data => setCurrentUser(data))
-    .catch(error => api.errorHandler(error));
-  }, []);
-
   React.useEffect(() => {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
@@ -100,12 +94,19 @@ function App() {
     .catch(error => api.errorHandler(error));
   }
 
-  React.useEffect(() => {
-    api.getInitialCards().then(cardList => {
-      setCards(cardList);
-    })
-    .catch(error => api.errorHandler(error))
-  }, []);
+  if (loggedIn) {
+    React.useEffect(() => {
+      api.getInitialCards().then(cardList => {
+        setCards(cardList);
+      })
+      .catch(error => api.errorHandler(error))
+    }, []);
+
+    React.useEffect(() => {
+      api.getUserInfo().then(data => setCurrentUser(data))
+      .catch(error => api.errorHandler(error));
+    }, []);
+  }
 
   const [cards, setCards] = React.useState([]);
 
