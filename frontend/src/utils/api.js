@@ -97,10 +97,13 @@ class Api {
 
 }
 
+const token = localStorage.getItem('jwt');
+
 const api = new Api({
     adress: 'https://api.nomoredomains.xyz',
     headers: {
-        'Content-Type': 'application/json'
-    }
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+    },
 });
 export default api;
