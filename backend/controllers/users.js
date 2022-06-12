@@ -10,7 +10,7 @@ const NotFoundError = require('../errors/not_found_error'); // 404
 
 const { NODE_ENV } = process.env;
 
-const { JWT_SECRET } = process.env;
+const { JWT_SECRET = 'secret' } = process.env;
 
 const getUsers = (req, res, next) => User.find({})
   .then((users) => res.status(200).send(users))
