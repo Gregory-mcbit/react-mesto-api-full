@@ -7,10 +7,7 @@ const { NODE_ENV, JWT_SECRET } = process.env;
 const AuthError = require('../errors/auth_error');
 
 function auth(req, res, next) {
-  const token = jwt.sign(
-  { _id: user._id },
-  NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret'
-  ); 
+  const token = req.cookies.jwt; 
   let payload;
 
   try {
