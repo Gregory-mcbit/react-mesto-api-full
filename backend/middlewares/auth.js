@@ -2,8 +2,6 @@ const jwt = require('jsonwebtoken');
 
 const AuthError = require('../errors/auth_error');
 
-const JWT_SECRET = 'secret';
-
 function auth(req, res, next) {
   const token = req.cookies.jwt;
   let payload;
